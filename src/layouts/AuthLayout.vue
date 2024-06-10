@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Login</h1>
-    <p>This is the Login page</p>
+    <p>Auth layout</p>
+    <slot></slot>
   </div>
 </template>
 <script lang="ts" setup></script>
