@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>Auth layout</p>
+    <p class="text-red-600">Auth layout</p>
     <slot></slot>
   </div>
 </template>
