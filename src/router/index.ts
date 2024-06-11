@@ -1,26 +1,40 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
+import HomeView from '@/views/HomeView.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import LoginView from '@/views/LoginView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
-    component: Login,
+    component: LoginView,
     meta: {
       layout: AuthLayout
     }
   },
   {
     path: '/',
-    component: Home,
+    component: HomeView,
     meta: {
       layout: DefaultLayout
     }
   },
+  {
+    path: '/categories',
+    component: () => import('@/views/Category/CategoryListingView.vue'),
+    meta: {
+      layout: DefaultLayout
+    }
+  },
+  {
+    path: '/categories',
+    component: () => import('@/views/User/UserListing.vue'),
+    meta: {
+      layout: DefaultLayout
+    }
+  }
 ]
 
 const router = createRouter({
