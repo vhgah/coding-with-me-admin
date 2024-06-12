@@ -22,19 +22,33 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/categories',
-    component: () => import('@/views/Category/CategoryListingView.vue'),
+    path: '/users',
+    component: () => import('@/views/User/UserListing.vue'),
+    meta: {
+      layout: DefaultLayout
+    }
+  },
+  {
+    path: '/posts',
+    component: () => import('@/views/Post/PostListingView.vue'),
+    meta: {
+      layout: DefaultLayout
+    }
+  },
+  {
+    path: '/tags',
+    component: () => import('@/views/Tag/TagListingView.vue'),
     meta: {
       layout: DefaultLayout
     }
   },
   {
     path: '/categories',
-    component: () => import('@/views/User/UserListing.vue'),
+    component: () => import('@/views/Category/CategoryListingView.vue'),
     meta: {
       layout: DefaultLayout
     }
-  }
+  },
 ]
 
 const router = createRouter({

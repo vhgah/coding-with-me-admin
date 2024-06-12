@@ -2,10 +2,9 @@
   <a-layout-header class="!bg-white">
     <MenuUnfoldOutlined
       v-if="menuStore.collapsed"
-      class="trigger"
       @click="menuStore.toggleCollapse"
     />
-    <MenuFoldOutlined v-else class="trigger" @click="menuStore.toggleCollapse" />
+    <MenuFoldOutlined v-else @click="menuStore.toggleCollapse" />
   </a-layout-header>
 </template>
 <script lang="ts" setup>

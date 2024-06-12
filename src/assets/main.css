@@ -1,13 +1,8 @@
 @import './base.css';
 
 /**
- * Fixed main menu
+FIX height layout
 */
-.ant-layout-sider.sidebar .main-menu {
-  overflow: auto;
-  height: calc(100vh - 56px);
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 190px;
+.ant-layout {
+  min-height: 100vh;
 }

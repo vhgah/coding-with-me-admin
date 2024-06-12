@@ -5,9 +5,8 @@ const instance = axios.create(apiConfig)
 
 instance.interceptors.request.use(
   (config) => {
-    
 
-    return config;
+    return config
   }
 )
 

@@ -1,5 +1,5 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
 
 export const useMenuStore = defineStore('useMenuStore', () => {
   const collapsed = ref<boolean>(false)
