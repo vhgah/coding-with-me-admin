@@ -4,6 +4,7 @@
   </div>
   <a-form
     :model="formState"
+
     name="basic"
     :label-col="{ span: 4 }"
     :wrapper-col="{ span: 20 }"
@@ -33,14 +34,16 @@
 
     <a-form-item :wrapper-col="{ offset: 4, span: 16 }">
       <a-button type="primary" html-type="submit">Submit</a-button>
-    </a-form-item>
+      </a-form-item>
   </a-form>
 </template>
 
 <script lang="ts" setup>
 import { reactive } from 'vue'
 
+
 interface FormState {
+
   username: string
   password: string
   remember: boolean
