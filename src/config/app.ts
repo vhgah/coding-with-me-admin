@@ -1,11 +1,11 @@
-const appUrl = import.meta.env.VITE_API_URL
+const apiURL = import.meta.env.VITE_API_URL
 
 interface ApiConfigInterface {
-  baseUrl: string;
+  baseURL: string;
   timeout: number;
 }
 
 export const apiConfig: ApiConfigInterface = {
-  baseUrl: appUrl,
+  baseURL: apiURL,
   timeout: 15 * 1000
 }

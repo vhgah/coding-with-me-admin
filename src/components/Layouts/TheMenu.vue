@@ -16,7 +16,7 @@
   </a-layout-sider>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { UserOutlined,
   HomeOutlined,
   ProfileOutlined,
@@ -24,37 +24,52 @@ import { UserOutlined,
   AppstoreOutlined } from '@ant-design/icons-vue'
 
 import { useMenuStore } from '@/stores/menu'
+import { useRoute } from 'vue-router'
 
-const selectedKeys = ref<string[]>([])
 const storeMenu = useMenuStore()
 
-const menus = [
+const selectedKeys = ref<number[]>([])
+
+const setMenuActive = () => {
+  const route = useRoute()
+  const currentMenuItem = menus.value.findIndex((menu) => menu.name === route.name)
+  selectedKeys.value = [currentMenuItem]
+}
+
+onMounted(() => setMenuActive())
+
+const menus = ref([
   {
     icon: HomeOutlined,
     router: '/',
-    title: 'Home'
+    title: 'Home',
+    name: 'home',
   },
   {
     icon: UserOutlined,
     router: '/users',
-    title: 'User'
+    title: 'User',
+    name: 'user',
   },
   {
     icon: ProfileOutlined,
     router: '/posts',
-    title: 'Post'
+    title: 'Post',
+    name: 'post',
   },
   {
     icon: TagsOutlined,
     router: '/tags',
-    title: 'Tag'
+    title: 'Tag',
+    name: 'tag',
   },
   {
     icon: AppstoreOutlined,
     router: '/categories',
-    title: 'Category'
+    title: 'Category',
+    name: 'category',
   }
-]
+])
 
 </script>
 

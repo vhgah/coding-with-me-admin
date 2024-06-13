@@ -6,6 +6,9 @@ const instance = axios.create(apiConfig)
 instance.interceptors.request.use(
   (config) => {
 
+    config.headers['Content-Type'] = 'application/json'
+    config.headers['Accept'] = 'application/json'
+
     return config
   }
 )

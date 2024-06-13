@@ -9,6 +9,7 @@ import LoginView from '@/views/LoginView.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/login',
+    name: 'login',
     component: LoginView,
     meta: {
       layout: AuthLayout
@@ -16,6 +17,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/',
+    name: 'home',
     component: HomeView,
     meta: {
       layout: DefaultLayout
@@ -23,6 +25,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/users',
+    name: 'user',
     component: () => import('@/views/User/UserListing.vue'),
     meta: {
       layout: DefaultLayout
@@ -30,6 +33,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/posts',
+    name: 'post',
     component: () => import('@/views/Post/PostListingView.vue'),
     meta: {
       layout: DefaultLayout
@@ -37,6 +41,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/tags',
+    name: 'tag',
     component: () => import('@/views/Tag/TagListingView.vue'),
     meta: {
       layout: DefaultLayout
@@ -44,6 +49,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/categories',
+    name: 'category',
     component: () => import('@/views/Category/CategoryListingView.vue'),
     meta: {
       layout: DefaultLayout
