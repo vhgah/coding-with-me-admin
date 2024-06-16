@@ -10,14 +10,16 @@
     :wrapper-col="{ span: 20 }"
     autocomplete="off"
     @finish="onFinish"
-    @finishFailed="onFinishFailed"
   >
     <a-form-item
-      label="Username"
-      name="username"
-      :rules="[{ required: true, message: 'Please input your username!' }]"
+      label="Email"
+      name="email"
+      :rules="[
+        {required: true, message: 'Please input your email!'},
+        { type: 'email', message: 'The input is not valid E-mail'}
+      ]"
     >
-      <a-input v-model:value="formState.username" />
+      <a-input v-model:value="formState.email" />
     </a-form-item>
 
     <a-form-item
@@ -33,31 +35,47 @@
     </a-form-item>
 
     <a-form-item :wrapper-col="{ offset: 4, span: 16 }">
-      <a-button type="primary" html-type="submit">Submit</a-button>
+      <a-button type="primary" html-type="submit" :loading="loading">Submit</a-button>
       </a-form-item>
   </a-form>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { message } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
+
+const authStore = useAuthStore()
+const loading = ref(false)
+const router = useRouter()
 
 interface FormState {
-
-  username: string
+  email: string
   password: string
   remember: boolean
 }
 
 const formState = reactive<FormState>({
-  username: '',
+  email: '',
   password: '',
   remember: true
 })
-const onFinish = (values: any) => {
-  console.log('Success:', values)
-}
 
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo)
+const onFinish = async (values: any) => {
+  loading.value = true
+  const {
+    hasError,
+    errorMessage,
+  } = await authStore.login(values.email, values.password)
+
+  if (hasError) {
+    loading.value = false
+    message.error(errorMessage)
+    return
+  }
+
+  router.push({ name: 'home' })
+
 }
 </script>

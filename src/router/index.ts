@@ -5,6 +5,7 @@ import HomeView from '@/views/HomeView.vue'
 import AuthLayout from '@/layouts/AuthLayout.vue'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import LoginView from '@/views/LoginView.vue'
+import checkAuth from './middlewares/checkAuth'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -61,5 +62,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes
 })
+
+router.beforeEach(checkAuth)
 
 export default router
