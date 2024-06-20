@@ -1,4 +1,4 @@
-import type { User } from '@/types/User'
+import type { User } from '@/types/user'
 
 export const userFactory = (user: Partial<User> = {}): User => {
   return {

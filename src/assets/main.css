@@ -4,5 +4,17 @@
 FIX height layout
 */
 .ant-layout {
-  min-height: 100vh;
+  min-height: 90vh !important;
+}
+
+.ant-menu.ant-menu-root.main-menu {
+  /* height: 100% !important; */
+}
+
+.ant-menu.ant-menu-root.main-menu {
+  @apply h-[30px] leading-[30px];
+}
+
+.ant-layout-header {
+  padding-inline: 1.5rem !important;
 }

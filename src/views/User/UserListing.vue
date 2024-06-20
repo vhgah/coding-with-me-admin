@@ -27,7 +27,7 @@ import { humanDate } from '@/helpers/datetime'
 
 const filters: any = ref({
   page: 1,
-  per_page: 10,
+  per_page: 15,
 })
 
 onMounted(() => fetchData())
@@ -38,7 +38,7 @@ const fetchData = async () => {
 
   const {
     hasError, errorMessage, successData, total
-  } = await userApi.get(filters.value)
+  } = await userApi.paginate(filters.value)
 
   loading.value = false
   if (hasError) {

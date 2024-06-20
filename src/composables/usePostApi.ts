@@ -1,7 +1,7 @@
 import httpClient from '@/api/httpClient'
-import { userFactory } from '@/factories/user'
+import { postFactory } from '@/factories/post'
 
-export default function useUserApi () {
+export default function usePostApi () {
   const paginate = async (params: any) => {
     let hasError: Boolean = false
     let errorMessage: String = ''
@@ -9,13 +9,13 @@ export default function useUserApi () {
     let successData: any = null
     let total: number = 0
     try {
-      const { data } = await httpClient.get('admin/users', {
+      const { data } = await httpClient.get('admin/posts', {
         params
       })
-      const users = data.data
+      const posts = data.data
 
-      successData = Object.keys(users).map((key) => {
-        return userFactory(users[key])
+      successData = Object.keys(posts).map((key) => {
+        return postFactory(posts[key])
       })
       total = data.total
 

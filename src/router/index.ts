@@ -41,6 +41,15 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
+    path: '/posts/create',
+    name: 'post.create',
+    component: () => import('@/views/Post/PostCreateView.vue'),
+    meta: {
+      layout: DefaultLayout
+    }
+  },
+
+  {
     path: '/tags',
     name: 'tag',
     component: () => import('@/views/Tag/TagListingView.vue'),
