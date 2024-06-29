@@ -4,7 +4,7 @@ export interface Post {
   summary: string
   content: string
   status: number | null
-  published_at: string
-  created_at: string
-  updated_at: string
+  publishedAt: string
+  createdAt: string
+  updatedAt: string
 }

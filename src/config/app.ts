@@ -1,11 +1,19 @@
 const apiURL = import.meta.env.VITE_API_URL
 
 interface ApiConfigInterface {
-  baseURL: string;
-  timeout: number;
+  mock: boolean
+  driver: string
+  client: {
+    baseURL: string
+    timeout: number
+  }
 }
 
 export const apiConfig: ApiConfigInterface = {
-  baseURL: apiURL,
-  timeout: 15 * 1000
+  mock: true,
+  driver: 'axios',
+  client: {
+    baseURL: apiURL,
+    timeout: 15 * 10000 // 150 seconds,
+  }
 }

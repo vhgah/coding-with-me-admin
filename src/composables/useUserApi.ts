@@ -3,9 +3,9 @@ import { userFactory } from '@/factories/user'
 
 export default function useUserApi () {
   const paginate = async (params: any) => {
-    let hasError: Boolean = false
-    let errorMessage: String = ''
-    let errorCode: Number = 0
+    let hasError: boolean = false
+    let errorMessage: string = ''
+    let errorCode: number = 0
     let successData: any = null
     let total: number = 0
     try {

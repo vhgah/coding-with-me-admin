@@ -16,6 +16,7 @@ const layout = computed(() => route.meta.layout)
 const theme = ref({
   token: {
     colorPrimary: '#00b96b'
-  }
+  },
+  hashed: false
 })
 </script>

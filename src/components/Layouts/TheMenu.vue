@@ -1,15 +1,11 @@
 <template>
-  <a-layout-sider
-    v-model:collapsed="storeMenu.collapsed"
-    :trigger="null"
-    collapsible
-  >
+  <a-layout-sider v-model:collapsed="storeMenu.collapsed" :trigger="null" collapsible>
     <div class="logo" />
     <a-menu theme="dark" mode="inline" class="main-menu" v-model:selectedKeys="selectedKeys">
       <a-menu-item v-for="(menu, key) in menus" :key="key">
         <router-link :to="menu.router">
           <component :is="menu.icon" />
-        <span>{{ menu.title }}</span>
+          <span>{{ menu.title }}</span>
         </router-link>
       </a-menu-item>
     </a-menu>
@@ -32,7 +28,13 @@ const selectedKeys = ref<number[]>([])
 
 const setMenuActive = () => {
   const route = useRoute()
-  const currentMenuItem = menus.value.findIndex((menu) => menu.name === route.name)
+  if (!route.name) {
+    return
+  }
+
+  const routeName = route.name.split('.')[0]
+
+  const currentMenuItem = menus.value.findIndex((menu) => menu.name === routeName)
   selectedKeys.value = [currentMenuItem]
 }
 
@@ -43,34 +45,33 @@ const menus = ref([
     icon: HomeOutlined,
     router: '/',
     title: 'Home',
-    name: 'home',
+    name: 'home'
   },
   {
     icon: UserOutlined,
     router: '/users',
     title: 'User',
-    name: 'user',
+    name: 'users'
   },
   {
     icon: ProfileOutlined,
     router: '/posts',
     title: 'Post',
-    name: 'post',
+    name: 'posts'
   },
   {
     icon: TagsOutlined,
     router: '/tags',
     title: 'Tag',
-    name: 'tag',
+    name: 'tags'
   },
   {
     icon: AppstoreOutlined,
     router: '/categories',
     title: 'Category',
-    name: 'category',
+    name: 'categories'
   }
 ])
-
 </script>
 
 <style scoped>

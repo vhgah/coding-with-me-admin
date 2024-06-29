@@ -26,7 +26,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/users',
-    name: 'user',
+    name: 'users',
     component: () => import('@/views/User/UserListing.vue'),
     meta: {
       layout: DefaultLayout
@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/posts',
-    name: 'post',
+    name: 'posts.index',
     component: () => import('@/views/Post/PostListingView.vue'),
     meta: {
       layout: DefaultLayout
@@ -42,8 +42,16 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/posts/create',
-    name: 'post.create',
+    name: 'posts.create',
     component: () => import('@/views/Post/PostCreateView.vue'),
+    meta: {
+      layout: DefaultLayout
+    }
+  },
+  {
+    path: '/posts/:id/edit',
+    name: 'posts.edit',
+    component: () => import('@/views/Post/PostEditView.vue'),
     meta: {
       layout: DefaultLayout
     }
@@ -51,7 +59,7 @@ const routes: Array<RouteRecordRaw> = [
 
   {
     path: '/tags',
-    name: 'tag',
+    name: 'tags.index',
     component: () => import('@/views/Tag/TagListingView.vue'),
     meta: {
       layout: DefaultLayout
@@ -59,7 +67,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/categories',
-    name: 'category',
+    name: 'categories.index',
     component: () => import('@/views/Category/CategoryListingView.vue'),
     meta: {
       layout: DefaultLayout

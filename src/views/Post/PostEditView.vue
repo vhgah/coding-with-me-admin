@@ -45,44 +45,76 @@
     </a-form-item>
     <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
       <a-button @click="handleClickBackButton" class="mr-3">Back</a-button>
-      <a-button :loading="creating" type="primary" html-type="submit">Submit</a-button>
+      <a-button :loading="updating" type="primary" html-type="submit">Update</a-button>
     </a-form-item>
   </a-form>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { postStatus } from '@/utils/constants'
 import Tiptap from '@/components/Tiptap/Tiptap.vue'
 import usePostApi from '@/api/requests/post'
 import { message } from 'ant-design-vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
+const route = useRoute()
 const router = useRouter()
+const isReady = ref(false)
+const updating = ref(false)
 
 const formState = ref({
   title: '',
   summary: '',
   content: '',
-  status: 3,
+  status: '',
   publishedAt: ''
 })
 
-const creating = ref(false)
-
-const onFinish = async (values: any) => {
+const fetchPostData = async () => {
+  const hide = message.loading('Loading product data...')
+  isReady.value = false
   const postApi = await usePostApi()
+  const postId = parseInt(route.params.id as string)
 
-  const {
-    hasError, errorMessage, successData
-  } = await postApi.create(values)
-
-  if (hasError) {
-    message.error(errorMessage)
+  if (isNaN(postId)) {
+    hide()
+    message.error('Post ID is invalid')
     return
   }
 
-  formState.value = successData
-  message.success('Create post successfully')
+  return postApi
+    .getDetail(postId)
+    .then(({ data }) => {
+      isReady.value = true
+      formState.value = data
+    })
+    .catch((error) => {
+      message.error(error?.response?.data?.message || 'An error occurred')
+    })
+    .finally(() => {
+      hide()
+    })
+}
+
+onMounted(() => fetchPostData())
+
+const onFinish = async (values: any) => {
+  updating.value = true
+  const postApi = await usePostApi()
+  const postId = parseInt(route.params.id as string)
+
+  postApi
+    .update(postId, values)
+    .then(({ data }) => {
+      formState.value = data
+      message.success('Update post successfully')
+    })
+    .catch((error) => {
+      message.error(error?.response?.data?.message || 'An error occurred')
+    })
+    .finally(() => {
+      updating.value = false
+    })
 }
 
 const handleClickBackButton = () => {

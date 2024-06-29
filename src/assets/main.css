@@ -18,3 +18,10 @@ FIX height layout
 .ant-layout-header {
   padding-inline: 1.5rem !important;
 }
+
+/** 
+FIX svg
+*/
+svg {
+  vertical-align: baseline;
+}

@@ -8,11 +8,11 @@ export const useAuthStore = defineStore('useAuthStore', () => {
   const token = ref('')
   const admin = ref<Admin>(adminFactory())
 
-  const login = async (email: String, password: String) => {
+  const login = async (email: string, password: string) => {
     const authApi = useAuthApi()
-    let hasError: Boolean = false
-    let errorMessage: String = ''
-    let errorCode: Number = 0
+    let hasError: boolean = false
+    let errorMessage: string = ''
+    let errorCode: number = 0
 
     try {
       const { data } = await authApi.login(email, password)
