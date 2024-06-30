@@ -52,7 +52,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { postStatus } from '@/utils/constants'
-import Tiptap from '@/components/Tiptap/Tiptap.vue'
+// import Tiptap from '@/components/Tiptap/Tiptap.vue'
 import usePostApi from '@/api/requests/post'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -84,11 +84,11 @@ const fetchPostData = async () => {
 
   return postApi
     .getDetail(postId)
-    .then(({ data }) => {
+    .then(({ data }: {data: any}) => {
       isReady.value = true
       formState.value = data
     })
-    .catch((error) => {
+    .catch((error: any) => {
       message.error(error?.response?.data?.message || 'An error occurred')
     })
     .finally(() => {
@@ -105,11 +105,11 @@ const onFinish = async (values: any) => {
 
   postApi
     .update(postId, values)
-    .then(({ data }) => {
+    .then(({ data }: { data: any }) => {
       formState.value = data
       message.success('Update post successfully')
     })
-    .catch((error) => {
+    .catch((error: any) => {
       message.error(error?.response?.data?.message || 'An error occurred')
     })
     .finally(() => {

@@ -41,7 +41,7 @@ import useFileApi from '@/composables/useFileApi'
 import { message } from 'ant-design-vue'
 import InfiniteLoading from 'v3-infinite-loading'
 import 'v3-infinite-loading/lib/style.css'
-import type { FileType } from '@/types/file'
+import type { File as FileType } from '@/types/file'
 
 defineProps({
   open: Boolean,
@@ -88,7 +88,7 @@ const handleCancel = () => {
   emit('close')
 }
 
-const fileSelected = ref<FileType>({})
+const fileSelected = ref<Partial<FileType>>({})
 const handleClickFile = (file: FileType) => {
   if (fileSelected.value.id === file.id) {
     fileSelected.value = {}

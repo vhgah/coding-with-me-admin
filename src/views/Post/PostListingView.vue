@@ -67,7 +67,7 @@ const fetchData = async () => {
   const postApi = await usePostApi()
   loading.value = true
   try {
-    postApi.paginate(postFilters.value).then(({ data }) => {
+    postApi.paginate(postFilters.value).then(({ data }: { data: any }) => {
       dataSource.value = data.data.map((item: any) => {
         return postFactory(item)
       })

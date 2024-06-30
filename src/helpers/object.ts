@@ -4,7 +4,7 @@ import snakeCase from 'lodash/snakeCase'
 
 export const objectIsEqual = isEqual
 
-export const toCamelCase = (obj) => {
+export const toCamelCase = (obj: any): any => {
   if (Array.isArray(obj)) {
     return obj.map((v) => toCamelCase(v))
   } else if (obj != null && obj.constructor === Object) {
@@ -19,7 +19,7 @@ export const toCamelCase = (obj) => {
   return obj
 }
 
-export const toSnakeCase = (obj) => {
+export const toSnakeCase = (obj: any): any => {
   if (Array.isArray(obj)) {
     return obj.map((v) => toSnakeCase(v))
   } else if (obj != null && obj.constructor === Object) {

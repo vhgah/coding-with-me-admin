@@ -52,7 +52,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { postStatus } from '@/utils/constants'
-import Tiptap from '@/components/Tiptap/Tiptap.vue'
+// import Tiptap from '@/components/Tiptap/Tiptap.vue'
 import usePostApi from '@/api/requests/post'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'

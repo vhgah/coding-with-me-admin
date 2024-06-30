@@ -1,10 +1,11 @@
 import { toCamelCase, toSnakeCase } from '@/helpers/object'
+import type { AxiosInstance } from 'axios'
 
-const isPosifyResponseError = (response) => {
+const isPosifyResponseError = (response: any) => {
   return response?.data?.code && response?.data?.message
 }
 
-export default (httpClient) => {
+export default (httpClient: AxiosInstance) => {
   httpClient.interceptors.request.use((config) => {
     if (config.data) {
       config.data = toSnakeCase(config.data)
@@ -18,7 +19,7 @@ export default (httpClient) => {
   })
 
   httpClient.interceptors.response.use(
-    (response) => {
+    (response: any) => {
       if (response.data) {
         response.data = toCamelCase(response.data)
       }
@@ -26,7 +27,7 @@ export default (httpClient) => {
       return response
     },
 
-    (error) => {
+    (error: any) => {
       const response = error.response || {}
 
       const platformError = {

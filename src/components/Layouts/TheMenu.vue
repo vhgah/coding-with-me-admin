@@ -28,11 +28,7 @@ const selectedKeys = ref<number[]>([])
 
 const setMenuActive = () => {
   const route = useRoute()
-  if (!route.name) {
-    return
-  }
-
-  const routeName = route.name.split('.')[0]
+  const routeName = typeof route.name === 'string' ? route.name.split('.')[0] : ''
 
   const currentMenuItem = menus.value.findIndex((menu) => menu.name === routeName)
   selectedKeys.value = [currentMenuItem]

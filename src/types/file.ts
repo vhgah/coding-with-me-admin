@@ -1,5 +1,5 @@
 export interface File {
-  id: number | null
+  id: number
   url: string
   name: string
   mime_type: string
