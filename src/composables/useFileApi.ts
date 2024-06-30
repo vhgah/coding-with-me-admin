@@ -22,8 +22,8 @@ export default function useFileApi () {
       total = data.total
     } catch (error: any) {
       hasError = true
-      errorMessage = error.response.data.message
-      errorCode = error.response.status
+      errorMessage = error?.response?.data?.message
+      errorCode = error?.response?.status
     }
 
     return {
@@ -55,8 +55,8 @@ export default function useFileApi () {
       successData = fileFactory(data)
     } catch (error: any) {
       hasError = true
-      errorMessage = error.response.data.message
-      errorCode = error.response.status
+      errorMessage = error?.response?.data?.message
+      errorCode = error?.response?.status
     }
 
     return {

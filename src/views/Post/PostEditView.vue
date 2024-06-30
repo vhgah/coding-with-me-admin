@@ -17,6 +17,13 @@
     >
       <a-input v-model:value="formState.title" />
     </a-form-item>
+    <a-form-item
+      label="Slug"
+      name="slug"
+      :rules="[{ required: true, message: 'Please input the slug!' }]"
+    >
+      <a-input v-model:value="formState.slug" @input="handleSlugInput" />
+    </a-form-item>
     <a-form-item label="Summary" name="summary">
       <a-textarea v-model:value="formState.summary" :rows="3" :maxlength="255" show-count />
     </a-form-item>
@@ -50,12 +57,13 @@
   </a-form>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { postStatus } from '@/utils/constants'
-// import Tiptap from '@/components/Tiptap/Tiptap.vue'
+import Tiptap from '@/components/Tiptap/Tiptap.vue'
 import usePostApi from '@/api/requests/post'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
+import { toSlug } from '@/helpers/string'
 
 const route = useRoute()
 const router = useRouter()
@@ -64,6 +72,7 @@ const updating = ref(false)
 
 const formState = ref({
   title: '',
+  slug: '',
   summary: '',
   content: '',
   status: '',
@@ -84,7 +93,7 @@ const fetchPostData = async () => {
 
   return postApi
     .getDetail(postId)
-    .then(({ data }: {data: any}) => {
+    .then(({ data }: { data: any }) => {
       isReady.value = true
       formState.value = data
     })
@@ -120,4 +129,18 @@ const onFinish = async (values: any) => {
 const handleClickBackButton = () => {
   router.push({ name: 'posts.index' })
 }
+
+const handleSlugInput = (event: any) => {
+  formState.value.slug = toSlug(event.target.value)
+}
+
+watch(
+  formState,
+  ({ title }) => {
+    formState.value.slug = toSlug(title)
+  },
+  {
+    deep: true
+  }
+)
 </script>

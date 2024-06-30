@@ -17,6 +17,13 @@
     >
       <a-input v-model:value="formState.title" />
     </a-form-item>
+    <a-form-item
+      label="Slug"
+      name="slug"
+      :rules="[{ required: true, message: 'Please input the slug!' }]"
+    >
+      <a-input v-model:value="formState.slug" @input="handleSlugInput" />
+    </a-form-item>
     <a-form-item label="Summary" name="summary">
       <a-textarea v-model:value="formState.summary" :rows="3" :maxlength="255" show-count />
     </a-form-item>
@@ -50,17 +57,19 @@
   </a-form>
 </template>
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { postStatus } from '@/utils/constants'
-// import Tiptap from '@/components/Tiptap/Tiptap.vue'
+import Tiptap from '@/components/Tiptap/Tiptap.vue'
 import usePostApi from '@/api/requests/post'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
+import { toSlug } from '@/helpers/string'
 
 const router = useRouter()
 
 const formState = ref({
   title: '',
+  slug: '',
   summary: '',
   content: '',
   status: 3,
@@ -70,22 +79,38 @@ const formState = ref({
 const creating = ref(false)
 
 const onFinish = async (values: any) => {
+  creating.value = true
   const postApi = await usePostApi()
 
-  const {
-    hasError, errorMessage, successData
-  } = await postApi.create(values)
-
-  if (hasError) {
-    message.error(errorMessage)
-    return
-  }
-
-  formState.value = successData
-  message.success('Create post successfully')
+  postApi
+    .create(values)
+    .then(({ data }: { data: any }) => {
+      formState.value = data
+      message.success('Create post successfully')
+    })
+    .catch((error: any) => {
+      message.error(error?.response?.data?.message || 'An error occurred')
+    })
+    .finally(() => {
+      creating.value = false
+    })
 }
 
 const handleClickBackButton = () => {
   router.push({ name: 'posts.index' })
 }
+
+const handleSlugInput = (event: any) => {
+  formState.value.slug = toSlug(event.target.value)
+}
+
+watch(
+  formState,
+  ({ title }) => {
+    formState.value.slug = toSlug(title)
+  },
+  {
+    deep: true
+  }
+)
 </script>

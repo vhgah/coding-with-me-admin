@@ -9,7 +9,6 @@ import router from './router'
 import Antd from 'ant-design-vue'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
-console.log('im here')
 const pina = createPinia()
 pina.use(piniaPluginPersistedstate)
 

@@ -4,6 +4,7 @@ export const postFactory = (post: Partial<Post> = {}): Post => {
   return {
     id: post.id || null,
     title: post.title || '',
+    slug: post.slug || '',
     summary: post.summary || '',
     content: post.content || '',
     status: post.status || null,

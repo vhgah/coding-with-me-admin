@@ -21,8 +21,8 @@ export default function useUserApi () {
 
     } catch (error: any) {
       hasError = true
-      errorMessage = error.response.data.message
-      errorCode = error.response.status
+      errorMessage = error?.response?.data?.message
+      errorCode = error?.response?.status
 
     }
     return {
