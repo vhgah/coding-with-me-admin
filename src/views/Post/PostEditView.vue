@@ -37,7 +37,8 @@
         }
       ]"
     >
-      <Tiptap v-model:value="formState.content" />
+      <!-- <Tiptap v-model:value="formState.content" /> -->
+      <TinyMceEditor v-model:value="formState.content" />
     </a-form-item>
     <a-form-item label="Status" name="status">
       <a-select v-model:value="formState.status" :options="postStatus"> </a-select>
@@ -59,7 +60,9 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import { postStatus } from '@/utils/constants'
-import Tiptap from '@/components/Tiptap/Tiptap.vue'
+// import Tiptap from '@/components/Tiptap/Tiptap.vue'
+import TinyMceEditor from '@/components/Common/TinyMceEditor.vue'
+
 import usePostApi from '@/api/requests/post'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
