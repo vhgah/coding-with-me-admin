@@ -4,9 +4,10 @@
     :columns="columns"
     :pagination="pagination"
     :loading="loading"
+    @change="handleTableChange"
     :scroll="{ x: 1268 }"
   >
-  <template #bodyCell="{ column, text, record }">
+    <template #bodyCell="{ column, text, record }">
       <template v-if="column.dataIndex === 'country'">
         {{ record.state }}, {{ record.city }}, {{ record.country }}
       </template>
@@ -27,7 +28,7 @@ import { humanDate } from '@/helpers/datetime'
 
 const filters: any = ref({
   page: 1,
-  per_page: 15,
+  per_page: 15
 })
 
 onMounted(() => fetchData())
@@ -57,7 +58,15 @@ const pagination = computed(() => ({
   total: totalRecord.value,
   current: filters.value.page,
   pageSize: filters.value.per_page,
+  showSizeChanger: true,
+  showTotal: (total, [min, max]) => `${min} - ${max} of ${total} products`
 }))
+
+const handleTableChange = ({ pageSize, current }) => {
+  filters.value.page = current
+  filters.value.per_page = pageSize
+  fetchData()
+}
 
 const columns = ref([
   {
@@ -66,14 +75,14 @@ const columns = ref([
     key: 'created_at',
     dataType: 'datetime',
     fixed: 'left',
-    width: 120,
+    width: 120
   },
   {
     title: 'IP address',
     dataIndex: 'ip_address',
     key: 'ip_address',
     fixed: 'left',
-    width: 220,
+    width: 220
   },
   {
     title: 'Referral url',
@@ -92,7 +101,7 @@ const columns = ref([
     dataIndex: 'is_robot',
     key: 'is_robot',
     dataType: 'boolean',
-    width: 100,
+    width: 100
   },
   {
     title: 'User agent',

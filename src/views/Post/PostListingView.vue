@@ -23,19 +23,31 @@
     :loading="loading"
     @change="handleTableChange"
   >
-    <template #bodyCell="{ column, text }">
+    <template #bodyCell="{ column, text, record: post }">
       <template v-if="column.dataType === 'datetime'">
         {{ text ? humanDate(text) : '' }}
       </template>
       <template v-if="column.dataType === 'status'">
-        {{ text === 1 ? 'Active' : 'Inactive' }}
+        <a-switch
+          :checked="post.isActive"
+          checked-children="Active"
+          un-checked-children="Inactive"
+          :loading="post.loading"
+          @change="handleClickStatusSwitch(post)"
+        />
       </template>
       <template v-if="column.dataType === 'action'">
-        <router-link
-          class="text-blue-600 hover:underline hover:text-blue-500"
-          :to="{ name: 'posts.edit', params: { id: text.id } }"
-          >Edit
-        </router-link>
+        <a-space>
+          <router-link
+            class="text-blue-600 hover:underline hover:text-blue-500"
+            :to="{ name: 'posts.edit', params: { id: text.id } }"
+          >
+            <a-button size="small"> Edit </a-button>
+          </router-link>
+          <a-popconfirm title="Sure to delete?" @confirm="handleClickDeletePost(post)">
+            <a-button size="small" danger> Delete </a-button>
+          </a-popconfirm>
+        </a-space>
       </template>
     </template>
   </a-table>
@@ -47,6 +59,7 @@ import { computed, onMounted, ref } from 'vue'
 import { humanDate } from '@/helpers/datetime'
 import { useRouter } from 'vue-router'
 import { postFactory } from '@/factories/post'
+import type { Post } from '@/types/post'
 
 const postFilters: any = ref({
   page: 1,
@@ -78,6 +91,48 @@ const fetchData = async () => {
   } finally {
     loading.value = false
   }
+}
+
+const handleClickStatusSwitch = (post: Post) => {
+  const status: number = post.isActive ? 2 : 1
+  handleUpdatePost(post, status)
+}
+
+const handleUpdatePost = async (post: Post, status: number) => {
+  post.loading = true
+  const postApi = await usePostApi()
+
+  postApi
+    .updateStatus(post.id, status)
+    .then(() => {
+      message.success('Update post successfully')
+      fetchData()
+    })
+    .catch((error: any) => {
+      message.error(error?.response?.data?.message || 'An error occurred')
+    })
+    .finally(() => {
+      post.loading = false
+    })
+}
+
+const handleClickDeletePost = async (post: Post) => {
+  post.loading = true
+
+  const postApi = await usePostApi()
+
+  postApi
+    .destroy(post.id)
+    .then(() => {
+      message.success('Deleted post successfully')
+      fetchData()
+    })
+    .catch((error: any) => {
+      message.error(error?.response?.data?.message || 'An error occurred')
+    })
+    .finally(() => {
+      post.loading = false
+    })
 }
 
 const dataSource = ref([])
@@ -138,4 +193,3 @@ const columns = ref([
   }
 ])
 </script>
-@/api/requests/post

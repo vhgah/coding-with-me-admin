@@ -7,8 +7,8 @@ export const postStatus = [
     value: 2,
     label: 'Inactive'
   },
-  {
-    value: 3,
-    label: 'Draft'
-  }
+  // {
+  //   value: 3,
+  //   label: 'Draft'
+  // }
 ]

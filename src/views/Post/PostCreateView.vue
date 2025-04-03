@@ -24,6 +24,9 @@
     >
       <a-input v-model:value="formState.slug" @input="handleSlugInput" />
     </a-form-item>
+    <a-form-item label="Category" name="categoryId">
+      <CategorySelect v-model:value="formState.categoryId" />
+    </a-form-item>
     <a-form-item label="Summary" name="summary">
       <a-textarea v-model:value="formState.summary" :rows="3" :maxlength="255" show-count />
     </a-form-item>
@@ -42,7 +45,7 @@
     <a-form-item label="Status" name="status">
       <a-select v-model:value="formState.status" :options="postStatus"> </a-select>
     </a-form-item>
-    <a-form-item label="Published at" name="published_at">
+    <a-form-item label="Published at" name="publishedAt">
       <a-date-picker
         v-model:value="formState.publishedAt"
         show-time
@@ -60,19 +63,22 @@
 import { ref, watch } from 'vue'
 import { postStatus } from '@/utils/constants'
 import Tiptap from '@/components/Tiptap/Tiptap.vue'
+import CategorySelect from '@/components/Category/CategorySelect.vue'
 import usePostApi from '@/api/requests/post'
 import { message } from 'ant-design-vue'
 import { useRouter } from 'vue-router'
 import { toSlug } from '@/helpers/string'
+import type { Post } from '@/types/post'
 
 const router = useRouter()
 
 const formState = ref({
   title: '',
   slug: '',
+  categoryId: null,
   summary: '',
   content: '',
-  status: 3,
+  status: 2,
   publishedAt: ''
 })
 
@@ -84,11 +90,12 @@ const onFinish = async (values: any) => {
 
   postApi
     .create(values)
-    .then(({ data }: { data: any }) => {
-      formState.value = data
+    .then(({ data }: { data: Post }) => {
       message.success('Create post successfully')
+      router.push({ path: `/posts/${data.id}/edit` })
     })
     .catch((error: any) => {
+      console.log(error)
       message.error(error?.response?.data?.message || 'An error occurred')
     })
     .finally(() => {

@@ -9,6 +9,7 @@ export const postFactory = (post: Partial<Post> = {}): Post => {
     content: post.content || '',
     status: post.status || null,
     publishedAt: post.publishedAt || '',
+    isActive: post.isActive || false,
     createdAt: post.createdAt || '',
     updatedAt: post.updatedAt || '',
   }

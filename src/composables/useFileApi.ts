@@ -1,7 +1,7 @@
 import { fileFactory } from '@/factories/file'
 import httpClient from '@/api/httpClient'
 
-export default function useFileApi () {
+export default function useFileApi() {
   const paginate = async (params: any = {}) => {
     let hasError: boolean = false
     let errorMessage: string = ''
@@ -67,8 +67,13 @@ export default function useFileApi () {
     }
   }
 
+  const destroy = async (file: any) => {
+    return httpClient.delete('/admin/files/' + file.id)
+  }
+
   return {
     paginate,
-    create
+    create,
+    destroy,
   }
 }

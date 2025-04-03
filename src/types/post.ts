@@ -6,6 +6,7 @@ export interface Post {
   content: string
   status: number | null
   publishedAt: string
+  isActive: boolean
   createdAt: string
   updatedAt: string
 }

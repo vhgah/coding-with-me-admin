@@ -1,11 +1,12 @@
 FROM node:18.20-alpine
 
-WORKDIR /var/www/html/coding-with-me-admin
+WORKDIR /app
 
-COPY package*.json .
-
+COPY package.json package-lock.json ./
 RUN npm install
 
 COPY . .
 
-RUN npm run build-only
+EXPOSE 5173
+
+CMD ["npm", "run", "dev", "--", "--host"]

@@ -41,7 +41,7 @@ import useFileApi from '@/composables/useFileApi'
 import { message } from 'ant-design-vue'
 import InfiniteLoading from 'v3-infinite-loading'
 import 'v3-infinite-loading/lib/style.css'
-import type { File as FileType } from '@/types/file'
+import type { File } from '@/types/file'
 
 defineProps({
   open: Boolean,
@@ -54,14 +54,12 @@ const fileFilters: any = ref({
   type: 'post'
 })
 
-const files = ref<FileType[]>([])
+const files = ref<File[]>([])
 
 const loadFiles = async ($state: any) => {
   const fileApi = useFileApi()
 
-  const {
-    hasError, errorMessage, successData, total
-  } = await fileApi.paginate(fileFilters.value)
+  const { hasError, errorMessage, successData, total } = await fileApi.paginate(fileFilters.value)
 
   if (hasError) {
     message.error(errorMessage)
@@ -88,8 +86,8 @@ const handleCancel = () => {
   emit('close')
 }
 
-const fileSelected = ref<Partial<FileType>>({})
-const handleClickFile = (file: FileType) => {
+const fileSelected = ref<Partial<File>>({})
+const handleClickFile = (file: File) => {
   if (fileSelected.value.id === file.id) {
     fileSelected.value = {}
     return
@@ -99,15 +97,11 @@ const handleClickFile = (file: FileType) => {
 }
 
 const customUpload = async (options: any) => {
-  const {
-    file, onError, onSuccess
-  } = options
+  const { file, onError, onSuccess } = options
 
   const fileApi = useFileApi()
 
-  const {
-    hasError, errorMessage, successData
-  } = await fileApi.create(file, 'post')
+  const { hasError, errorMessage, successData } = await fileApi.create(file, 'post')
 
   if (hasError) {
     message.error(errorMessage)

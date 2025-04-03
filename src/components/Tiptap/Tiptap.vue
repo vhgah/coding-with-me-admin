@@ -90,7 +90,8 @@
 <script setup>
 import { useEditor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
-import { UndoOutlined,
+import {
+  UndoOutlined,
   BoldOutlined,
   UnderlineOutlined,
   ItalicOutlined,
@@ -100,7 +101,8 @@ import { UndoOutlined,
   RedoOutlined,
   CodeOutlined,
   OrderedListOutlined,
-  UnorderedListOutlined } from '@ant-design/icons-vue'
+  UnorderedListOutlined
+} from '@ant-design/icons-vue'
 import { computed, ref, watch } from 'vue'
 import Underline from '@tiptap/extension-underline'
 import Link from '@tiptap/extension-link'
@@ -126,12 +128,12 @@ const editor = useEditor({
       },
       bulletList: {
         HTMLAttributes: {
-          class: 'list-disc pl-4'
+          class: 'list-disc pl-6'
         }
       },
       orderedList: {
         HTMLAttributes: {
-          class: 'list-decimal pl-4'
+          class: 'list-decimal pl-6'
         }
       }
     }),
@@ -140,17 +142,19 @@ const editor = useEditor({
       openOnClick: false,
       defaultProtocol: 'https',
       HTMLAttributes: {
-        class: '!text-sky-600 hover:text-sky-700 hover:underline'
+        class: 'text-black hover:text-amber-700 transition-colors duration-300'
       }
     }),
-    Image
+    Image.configure({
+      inline: false
+    })
   ],
   editorProps: {
     attributes: {
       class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl m-5 focus:outline-none h-full'
     }
   },
-  onUpdate ({ editor }) {
+  onUpdate({ editor }) {
     emit('update:value', editor.getHTML())
   }
 })

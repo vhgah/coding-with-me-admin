@@ -24,6 +24,33 @@
     >
       <a-input v-model:value="formState.slug" @input="handleSlugInput" />
     </a-form-item>
+    <a-form-item label="Upload" name="featuredImage">
+      <div class="ant-upload-container">
+        <div
+          v-if="formState.featuredImage"
+          class="relative rounded overflow-hidden max-w-full max-h-full"
+        >
+          <a-image :src="formState.featuredImage" alt="featured image" />
+          <a-button
+            type="text"
+            class="close-button"
+            shape="circle"
+            size="small"
+            @click="handleClickDeleteButton()"
+          >
+            <template #icon>
+              <CloseCircleOutlined />
+            </template>
+          </a-button>
+        </div>
+        <div v-else @click="handleClickFeaturedImage" class="ant-upload">
+          <PlusOutlined />
+        </div>
+      </div>
+    </a-form-item>
+    <a-form-item label="Category" name="categoryId">
+      <CategorySelect v-model:value="formState.categoryId" />
+    </a-form-item>
     <a-form-item label="Summary" name="summary">
       <a-textarea v-model:value="formState.summary" :rows="3" :maxlength="255" show-count />
     </a-form-item>
@@ -37,13 +64,12 @@
         }
       ]"
     >
-      <!-- <Tiptap v-model:value="formState.content" /> -->
-      <TinyMceEditor v-model:value="formState.content" />
+      <Tiptap v-model:value="formState.content" />
     </a-form-item>
     <a-form-item label="Status" name="status">
       <a-select v-model:value="formState.status" :options="postStatus"> </a-select>
     </a-form-item>
-    <a-form-item label="Published at" name="published_at">
+    <a-form-item label="Published at" name="publishedAt">
       <a-date-picker
         v-model:value="formState.publishedAt"
         show-time
@@ -56,30 +82,41 @@
       <a-button :loading="updating" type="primary" html-type="submit">Update</a-button>
     </a-form-item>
   </a-form>
+  <FileModal :open="fileModal.open" @ok="handleFileModalOk" @close="handleFileModalClose" />
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import { postStatus } from '@/utils/constants'
-// import Tiptap from '@/components/Tiptap/Tiptap.vue'
-import TinyMceEditor from '@/components/Common/TinyMceEditor.vue'
-
+import Tiptap from '@/components/Tiptap/Tiptap.vue'
+import CategorySelect from '@/components/Category/CategorySelect.vue'
 import usePostApi from '@/api/requests/post'
 import { message } from 'ant-design-vue'
 import { useRoute, useRouter } from 'vue-router'
 import { toSlug } from '@/helpers/string'
+import { PlusOutlined, CloseCircleOutlined } from '@ant-design/icons-vue'
+import FileModal from '@/components/Tiptap/FileModal.vue'
+import type { File } from '@/types/file'
 
 const route = useRoute()
 const router = useRouter()
 const isReady = ref(false)
 const updating = ref(false)
 
+const fileModal = ref({
+  open: false,
+  value: ''
+})
+
 const formState = ref({
   title: '',
   slug: '',
+  image: '',
+  categoryId: null,
   summary: '',
   content: '',
   status: '',
-  publishedAt: ''
+  publishedAt: '',
+  featuredImage: ''
 })
 
 const fetchPostData = async () => {
@@ -137,6 +174,23 @@ const handleSlugInput = (event: any) => {
   formState.value.slug = toSlug(event.target.value)
 }
 
+const handleClickFeaturedImage = () => {
+  fileModal.value.open = true
+}
+
+const handleClickDeleteButton = () => {
+  formState.value.featuredImage = ''
+}
+
+const handleFileModalOk = (file: File) => {
+  fileModal.value.open = false
+  formState.value.featuredImage = file.url
+}
+
+const handleFileModalClose = () => {
+  fileModal.value.open = false
+}
+
 watch(
   formState,
   ({ title }) => {
@@ -147,3 +201,39 @@ watch(
   }
 )
 </script>
+<style>
+.ant-upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+}
+
+.ant-upload-container {
+  width: 102px;
+  height: 102px;
+  margin-inline-end: 8px;
+  margin-bottom: 8px;
+  text-align: center;
+  vertical-align: top;
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.ant-upload-container .close-button {
+  @apply hidden;
+}
+
+.ant-upload-container:hover .close-button {
+  @apply block;
+  @apply absolute top-0 right-0 bg-transparent p-0 text-white;
+}
+
+.ant-upload-container .close-button:hover {
+  @apply !bg-gray-500/70;
+}
+</style>
