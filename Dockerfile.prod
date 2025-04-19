@@ -1,27 +1,22 @@
-# 🏗 STAGE 1: Build Vue App
-FROM node:18-slim AS builder
+FROM node:18-slim
+
+# install simple http server for serving static content
+RUN npm install -g http-server
+
+# make the 'app' folder the current working directory
 WORKDIR /app
 
-# Cài đặt dependencies
-COPY package.json package-lock.json ./
-RUN npm ci
+# copy both 'package.json' and 'package-lock.json' (if available)
+COPY package*.json ./
 
-# Copy toàn bộ code và build ứng dụng Vue 3
+# install project dependencies
+RUN npm install
+
+# copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
+
+# build app for production with minification
 RUN npm run build
 
-# 🚀 STAGE 2: Serve với Vite Preview
-FROM node:18-slim AS runner
-WORKDIR /app
-
-# Cài đặt Vite Preview
-RUN npm install -g vite
-
-# Copy file build từ builder stage
-COPY --from=builder /app/dist ./dist
-
-# Mở cổng 4173 (mặc định của Vite Preview)
 EXPOSE 5173
-
-# Chạy Vite Preview để phục vụ ứng dụng
-CMD ["vite", "preview"]
+CMD [ "http-server", "dist", "-p", "5173", "--host", "0.0.0.0" ]
