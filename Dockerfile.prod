@@ -1,5 +1,5 @@
 # 🏗 STAGE 1: Build Vue App
-FROM node:18-alpine AS builder
+FROM node:18-slim AS builder
 WORKDIR /app
 
 # Cài đặt dependencies
@@ -11,7 +11,7 @@ COPY . .
 RUN npm run build
 
 # 🚀 STAGE 2: Serve với Vite Preview
-FROM node:18-alpine AS runner
+FROM node:18-slim AS runner
 WORKDIR /app
 
 # Cài đặt Vite Preview
@@ -24,4 +24,4 @@ COPY --from=builder /app/dist ./dist
 EXPOSE 5173
 
 # Chạy Vite Preview để phục vụ ứng dụng
-CMD ["vite", "preview", "--port", "5173", "--host"]
+CMD ["vite", "preview"]
