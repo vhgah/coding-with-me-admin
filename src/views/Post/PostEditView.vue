@@ -1,8 +1,8 @@
 <template>
   <a-form
     :model="formState"
-    :label-col="{ span: 3 }"
-    :wrapper-col="{ span: 19 }"
+    :label-col="{ span: 4 }"
+    :wrapper-col="{ span: 16 }"
     @finish="onFinish"
   >
     <a-form-item
@@ -17,12 +17,23 @@
     >
       <a-input v-model:value="formState.title" />
     </a-form-item>
+
     <a-form-item
       label="Slug"
       name="slug"
+      class="w-full"
       :rules="[{ required: true, message: 'Please input the slug!' }]"
     >
-      <a-input v-model:value="formState.slug" @input="handleSlugInput" />
+      <a-flex :gap="10">
+        <a-input
+          class="w-full"
+          style="flex: 1"
+          :readonly="slugAuto"
+          v-model:value="formState.slug"
+          @input="handleSlugInput"
+        />
+        <a-button @click="slugAuto = !slugAuto">{{ slugAuto ? 'Edit' : 'Auto' }}</a-button>
+      </a-flex>
     </a-form-item>
     <a-form-item label="Upload" name="featuredImage">
       <div class="ant-upload-container">
@@ -101,6 +112,7 @@ const route = useRoute()
 const router = useRouter()
 const isReady = ref(false)
 const updating = ref(false)
+const slugAuto = ref(true)
 
 const fileModal = ref({
   open: false,
@@ -135,6 +147,8 @@ const fetchPostData = async () => {
     .getDetail(postId)
     .then(({ data }: { data: any }) => {
       isReady.value = true
+      slugAuto.value = false
+
       formState.value = data
     })
     .catch((error: any) => {
@@ -192,12 +206,23 @@ const handleFileModalClose = () => {
 }
 
 watch(
-  formState,
-  ({ title }) => {
-    formState.value.slug = toSlug(title)
-  },
-  {
-    deep: true
+  () => formState.value.title,
+  () => {
+    if (!slugAuto.value) {
+      return
+    }
+
+    formState.value.slug = toSlug(formState.value.title)
+  }
+)
+watch(
+  () => slugAuto.value,
+  () => {
+    if (!slugAuto.value) {
+      return
+    }
+
+    formState.value.slug = toSlug(formState.value.title)
   }
 )
 </script>
